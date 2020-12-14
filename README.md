@@ -64,6 +64,7 @@ struct RFC882DateTime
 ## Sample program
 ```
 #include <iostream>
+#include <string>
 #include "rfc882datetime.h"
 
 int main()
