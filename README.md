@@ -3,7 +3,9 @@ This is a C++17 library for parsing an "RFC882 Date &amp; Time Specification" st
 
 The RFC882 Date and Time Specification is located here: https://tools.ietf.org/html/rfc822#section-5.1
 
-While the specification calls for a two digit year, this library also allows for a four digit year. A four digit year is preferred in some applications such as RSS feeds (See https://validator.w3.org/feed/docs/rss2.html). All two digit years are assumed to be in the 21st century.
+While the specification calls for a two digit year, this library also allows for a four digit year. A four digit year is preferred in some applications such as RSS feeds (See https://validator.w3.org/feed/docs/rss2.html). All two digit years are added to 2000.
+
+The RFC882 Date and Time Specification only defines ASCII-compatible characters, therefore this library uses std::string and char. Any multi-byte encodings should be converted to an ASCII-compatible single-byte encoding before passing to this library.
 
 ## Usage
 rfc882datetime.h uses the rfc882 namespace.
