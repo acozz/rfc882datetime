@@ -100,12 +100,32 @@ namespace rfc882
         } dateTime;
     };
 
+    // Take an RFC882 Date and Time and try to parse it into an RFC882DateTime structure.
     std::optional<RFC882DateTime> parseDateAndTimeSpec(std::string stamp);
 
-    // Comparison operators. In C++20, this can be replaced by overloading <=>.
-    bool operator<(const RFC882DateTime& x, const RFC882DateTime& y);
-    bool operator<=(const RFC882DateTime& x, const RFC882DateTime& y);
-    bool operator>(const RFC882DateTime& x, const RFC882DateTime& y);
-    bool operator>=(const RFC882DateTime& x, const RFC882DateTime& y);
-    bool operator==(const RFC882DateTime& x, const RFC882DateTime& y);
+    // Comparison operators. In C++20, these can be replaced by overloading <=>.
+    inline bool operator<(const RFC882DateTime& x, const RFC882DateTime& y)
+    {
+        return x.time < y.time;
+    }
+
+    inline bool operator<=(const RFC882DateTime& x, const RFC882DateTime& y)
+    {
+        return x.time <= y.time;
+    }
+
+    inline bool operator>(const RFC882DateTime& x, const RFC882DateTime& y)
+    {
+        return x.time > y.time;
+    }
+
+    inline bool operator>=(const RFC882DateTime& x, const RFC882DateTime& y)
+    {
+        return x.time >= y.time;
+    }
+
+    inline bool operator==(const RFC882DateTime& x, const RFC882DateTime& y)
+    {
+        return x.time == y.time;
+    }
 }

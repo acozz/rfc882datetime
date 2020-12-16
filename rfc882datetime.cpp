@@ -1,5 +1,5 @@
 #include <array>
-#include <ctime>
+#include <ctime> // for std::time_t
 #include <regex>
 
 #include "rfc882datetime.h"
@@ -93,32 +93,7 @@ namespace rfc882
             (date.second >= 0 && date.second <= 59);
     }
 
-    bool operator<(const RFC882DateTime& x, const RFC882DateTime& y)
-    {
-        return x.time < y.time;
-    }
-
-    bool operator<=(const RFC882DateTime& x, const RFC882DateTime& y)
-    {
-        return x.time <= y.time;
-    }
-
-    bool operator>(const RFC882DateTime& x, const RFC882DateTime& y)
-    {
-        return x.time > y.time;
-    }
-
-    bool operator>=(const RFC882DateTime& x, const RFC882DateTime& y)
-    {
-        return x.time >= y.time;
-    }
-
-    bool operator==(const RFC882DateTime& x, const RFC882DateTime& y)
-    {
-        return x.time == y.time;
-    }
-
-    std::optional<RFC882DateTime> parseDateAndTimeSpec(std::string stamp)
+   std::optional<RFC882DateTime> parseDateAndTimeSpec(std::string stamp)
     {
         const std::regex rfc882DateTime{
             /*
