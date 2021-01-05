@@ -1,4 +1,5 @@
-#pragma once
+#ifndef RFC882DATETIME_H
+#define RFC882DATETIME_H
 
 /* 
 Parse RFC882 Date and Time Specification
@@ -129,3 +130,5 @@ namespace rfc882
         return x.time == y.time;
     }
 }
+
+#endif
