@@ -136,16 +136,16 @@ namespace rfc882
 
             // Make sure that the date and time are not out of normal bounds.
             if(!isValidDate(date.dateTime) || !isValidTime(date.dateTime))
-                return {};
+                return std::nullopt;
 
             // Calculate the time point
             date.time = generateUTCTime(date.dateTime);
 
-            return { date };
+            return date;
         }
         
         // The timestamp is not RFC882 compliant
-        return {};
+        return std::nullopt;
     }
 
     std::chrono::minutes parseLocalDifferential(const std::string& localDifferential)
