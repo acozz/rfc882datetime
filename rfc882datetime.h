@@ -91,7 +91,7 @@ namespace rfc882
         {
             int day    = 1;        // day of month [1 - 31] (depending on the month)
             int month  = 1;        // month of year [1 - 12]
-            int year   = 1970;     // year (2 digit years are assumed in 21st century)
+            int year   = 1970;     // year (2 digit years are added to 2000)
 
             int hour   = 0;        // hour [0 - 23]
             int minute = 0;        // minute [0 - 59]
