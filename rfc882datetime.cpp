@@ -1,5 +1,7 @@
+#include <algorithm> // for std::find()
 #include <array>
 #include <ctime> // for std::time_t
+#include <iterator> // for std::distance()
 #include <regex>
 
 #include "rfc882datetime.h"
@@ -163,13 +165,8 @@ namespace rfc882
     int parseMonth(const std::string& month) noexcept
     {
         const std::array<char[4], 12> months{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
-
-        for(decltype(months)::size_type i = 0; i < months.size(); ++i)
-            if(months[i] == month)
-                return i + 1;
-        
-        // Not found
-        return 0;
+        auto pos = std::find(months.begin(), months.end(), month);
+        return (pos == months.end()) ? 0 : std::distance(months.begin(), pos) + 1;
     }
     
     std::chrono::minutes parseTimeZone(const std::string& timezone)
