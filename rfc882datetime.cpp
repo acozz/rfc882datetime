@@ -15,7 +15,7 @@ namespace rfc882
     std::chrono::minutes parseTimeZone(const std::string& timezone);
 
     // Algorithm: http://howardhinnant.github.io/date_algorithms.html
-    // This is basically what you would see baked into C++20's std::chrono calendar support.
+    // This is a public domain function.
     // So let's not reinvent the wheel. Howard Hinnant designed std::chrono...
     // =====================================================================================
     // Returns number of days since civil 1970-01-01.  Negative values indicate
@@ -108,15 +108,14 @@ namespace rfc882
              Group9 = Optional named time zone
              Group10 = Optional local differential
             */
-            R"(^(Mon,|Tue,|Wed,|Thu,|Fri,|Sat,|Sun,)?\s*(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{2,4})\s+(\d{2}):(\d{2})(:\d{2})?\s+((UT|GMT|EST|EDT|CST|CDT|MST|MDT|PST|PDT|Z|A|M|N|Y)|((\+|-)(\d{4})))$)"
+            R"((Mon,|Tue,|Wed,|Thu,|Fri,|Sat,|Sun,)?\s*(\d{1,2})\s+(Jan|Feb|Mar|Apr|May|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+(\d{2,4})\s+(\d{2}):(\d{2})(:\d{2})?\s+((UT|GMT|EST|EDT|CST|CDT|MST|MDT|PST|PDT|Z|A|M|N|Y)|((\+|-)(\d{4}))))"
         };
 
         if(std::smatch results; std::regex_match(stamp, results, rfc882DateTime))
         {
             // This timestamp is verified to be RFC882 compliant. Now, parse the data into an RFC882DateTime structure.
             RFC882DateTime date;
-            date.stamp = std::move(stamp);
-
+            
             // Gather the tokens and convert them to integers, as necessary.
             // The regex matching guarantees that std::stoi will not fail.
             date.tokens.dayOfWeek = results[1].matched ? std::string{ results[1].first, results[1].second - 1 } : "";
@@ -125,7 +124,7 @@ namespace rfc882
             date.dateTime.month = parseMonth(date.tokens.month = results[3].str());
             date.dateTime.year = std::stoi(date.tokens.year = results[4].str());
             if(date.dateTime.year < 100)
-                date.dateTime.year += 2000; // assume 21st century
+                date.dateTime.year += 2000; // assume year 2000+
 
             date.dateTime.hour = std::stoi(date.tokens.hour = results[5].str());
             date.dateTime.minute = std::stoi(date.tokens.minute = results[6].str());
@@ -140,6 +139,9 @@ namespace rfc882
 
             // Calculate the time point
             date.time = generateUTCTime(date.dateTime);
+
+            // It is now safe to invalidate the std::smatch pointers
+            date.stamp = std::move(stamp);
 
             return date;
         }
@@ -162,7 +164,7 @@ namespace rfc882
     {
         const std::array<char[4], 12> months{ "Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec" };
 
-        for(unsigned int i = 0; i < months.size(); ++i)
+        for(decltype(months)::size_type i = 0; i < months.size(); ++i)
             if(months[i] == month)
                 return i + 1;
         
