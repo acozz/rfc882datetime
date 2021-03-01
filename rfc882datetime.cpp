@@ -1,5 +1,6 @@
 #include <algorithm> // for std::find()
 #include <array>
+#include <cstdlib> // for std::div()
 #include <ctime> // for std::time_t
 #include <iterator> // for std::distance()
 #include <regex>
@@ -155,11 +156,9 @@ namespace rfc882
     std::chrono::minutes parseLocalDifferential(const std::string& localDifferential)
     {
         // Precondition: this is a valid local differential of the form (+/-)HHMM
-        int diff = std::stoi(localDifferential);
-        int hours = diff / 100;
-        int minutes = diff - (hours * 100);
+        std::div_t res = std::div(std::stoi(localDifferential), 100);
 
-        return { std::chrono::hours{hours} + std::chrono::minutes{minutes} };
+        return { std::chrono::hours{res.quot} + std::chrono::minutes{res.rem} };
     }
 
     int parseMonth(const std::string& month) noexcept
